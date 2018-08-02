@@ -16,20 +16,9 @@ public class FlowableHandler {
     private final RepositoryService repositoryService;
     private final TaskService taskService;
     private final RuntimeService runtimeService;
-//    private final String accommodationProcessFile;
 
     private FlowableHandler() {
-        this.bookingProcessFile =  //"TransactionCancelling.bpmn";
-            "CompensationTest.bpmn";
-            // "BookingItemProcess.bpmn";
-        // "BookingProcessWithTransaction2.bpmn";
-        // "JoinGatewayTest.bpmn";
-        // "BookingProcessWithTransaction.bpmn";
-        // "Transaction.bpmn";
-        // "SimpleBookingProcess.bpmn";
-
-
-//        this.accommodationProcessFile = "Child.bpmn"; // "AccomodationBookingProcess.bpmn";
+        this.bookingProcessFile = "CompensationTest.bpmn";
 
         ProcessEngineConfiguration cfg =
             new StandaloneProcessEngineConfiguration()
@@ -39,9 +28,6 @@ public class FlowableHandler {
                 .setJdbcDriver("org.h2.Driver")
                 .setDatabaseSchemaUpdate(
                     ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
-//                .setJpaPersistenceUnitName("flowable-jpa-pu");
-
-
 
         ProcessEngine processEngine = cfg.buildProcessEngine();
 
@@ -58,7 +44,6 @@ public class FlowableHandler {
         repositoryService
             .createDeployment()
             .addClasspathResource(bookingProcessFile)
-//            .addClasspathResource(accommodationProcessFile)
             .deploy();
     }
 
