@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <signal id="allSubitemsConfirmedSignal" name="allSubitemsConfirmedSignal" activiti:scope="global"></signal>
+  <signal id="tripFinished" name="tripFinished" activiti:scope="processInstance"></signal>
+  <process id="bookingProcess" name="bookingProcess" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <sequenceFlow id="flow126" sourceRef="startevent1" targetRef="transaction1"></sequenceFlow>
+    <transaction id="transaction1" name="Transaction">
+      <userTask id="sendInvitation" name="send invitation"></userTask>
+      <userTask id="receivePayment" name="receive payment"></userTask>
+      <boundaryEvent id="boundarycompensation4" name="Compensate" attachedToRef="receivePayment" cancelActivity="true">
+        <compensateEventDefinition></compensateEventDefinition>
+      </boundaryEvent>
+      <userTask id="handleCancellation" name="handle customer cancellation"></userTask>
+      <sequenceFlow id="flow214" sourceRef="handleCancellation" targetRef="cancelendevent1"></sequenceFlow>
+      <endEvent id="cancelendevent1" name="End">
+        <cancelEventDefinition></cancelEventDefinition>
+      </endEvent>
+      <startEvent id="startevent4" name="Start"></startEvent>
+      <sequenceFlow id="flow216" sourceRef="startevent4" targetRef="handleCancellation"></sequenceFlow>
+      <userTask id="sendTicket" name="send ticket"></userTask>
+      <sequenceFlow id="flow218" sourceRef="receivePayment" targetRef="sendTicket"></sequenceFlow>
+      <sequenceFlow id="flow219" sourceRef="sendTicket" targetRef="terminateendevent1"></sequenceFlow>
+      <sequenceFlow id="flow220" sourceRef="startevent4" targetRef="sendInvitation"></sequenceFlow>
+      <sequenceFlow id="flow221" sourceRef="sendInvitation" targetRef="receivePayment"></sequenceFlow>
+      <userTask id="payMoneyBack" name="pay money back" isForCompensation="true"></userTask>
+      <endEvent id="terminateendevent1" name="End">
+        <terminateEventDefinition></terminateEventDefinition>
+      </endEvent>
+      <association id="association4" sourceRef="boundarycompensation4" targetRef="usertask37" associationDirection="None"></association>
+      <association id="association5" sourceRef="boundarycompensation4" targetRef="usertask40" associationDirection="None"></association>
+      <association id="association6" sourceRef="boundarycompensation4" targetRef="payMoneyBack" associationDirection="None"></association>
+    </transaction>
+    <endEvent id="endevent21" name="End"></endEvent>
+    <sequenceFlow id="flow193" sourceRef="transaction1" targetRef="endevent21"></sequenceFlow>
+    <boundaryEvent id="boundarycancel1" name="Cancel" attachedToRef="transaction1" cancelActivity="true">
+      <cancelEventDefinition></cancelEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent25" name="End"></endEvent>
+    <sequenceFlow id="flow207" sourceRef="boundarycancel1" targetRef="endevent25"></sequenceFlow>
+  </process>
+</definitions>
